@@ -1,16 +1,12 @@
-html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #012;
+  color: #fff;
+  padding: 20px 0px;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
+img {
+  margin: 2px;
+  width: 160px;
 }
-
-* {
-  box-sizing: border-box;
+.unread {
+  width: 120px;
 }
