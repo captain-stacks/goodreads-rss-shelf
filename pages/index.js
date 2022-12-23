@@ -1,5 +1,3 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
 
 export default function Home() {
@@ -15,8 +13,13 @@ export default function Home() {
   }, [])
 
   async function load() {
-    window.location.hash = url.current.value
-    let xml = await fetchXML('/api/hello?url=' + url.current.value)
+    let id = url.current.value.match(/(\d+)/)
+    if (!id) {
+      return
+    }
+    id = id[0]
+    window.location.hash = id
+    let xml = await fetchXML('/api/hello?url=' + id)
     let books = [...xml.querySelectorAll('item')].map(i => {
       let shelves = i.querySelector('user_shelves').textContent.split(', ')
       let unread = shelves.includes('to-read')
