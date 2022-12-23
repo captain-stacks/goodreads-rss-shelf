@@ -1,13 +1,21 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 export default function Home() {
-
   const url = useRef()
   const [shelves, setShelves] = useState([])
 
+  useEffect(() => {
+    let id = window.location.hash.substring(1)
+    if (id) {
+      url.current.value = id
+      load()
+    }
+  }, [])
+
   async function load() {
+    window.location.hash = url.current.value
     let xml = await fetchXML('/api/hello?url=' + url.current.value)
     let books = [...xml.querySelectorAll('item')].map(i => {
       let shelves = i.querySelector('user_shelves').textContent.split(', ')
@@ -71,10 +79,11 @@ export default function Home() {
   }
 
   return <>
-    Enter Goodreads user ID:<br/>
-    <input ref={url}/>&nbsp;
-    <button onClick={load}>Load</button>
-    <br/>
+    { shelves.length ? '' :
+      <>Enter Goodreads user ID:<br/>
+      <input ref={url}/>&nbsp;
+      <button onClick={load}>Load</button>
+    </> }
     { shelves.map(s => <div key={s.name}>
       <h2>{s.name}</h2>
       { s.books.map(b => <img className={b.unread ? 'unread' : ''} key={b.id} src={b.image}/> )}
